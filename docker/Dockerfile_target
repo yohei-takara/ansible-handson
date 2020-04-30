@@ -1,0 +1,22 @@
+FROM centos:7.7.1908
+
+RUN yum update -y \
+    && yum install -y \
+       sudo openssh-server shadow-utils passwd coreutils which sudo hostname chrony wget
+
+RUN  sed -i -e 's/# %wheel\tALL=(ALL)\tNOPASSWD: ALL/%wheel\tALL=(ALL)\tNOPASSWD: ALL/' /etc/sudoers \
+     && sed -i -e 's/%wheel\tALL=(ALL)\tALL/# %wheel\tALL=(ALL)\tALL/' /etc/sudoers \
+     && visudo -c \
+     && useradd ansible-user \
+     && usermod -G wheel ansible-user \
+     && sed -ri 's/^#PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/sshd_config \
+     && sed -ri 's/^#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config \
+     && sed -ri 's/^UsePAM yes/UsePAM no/' /etc/ssh/sshd_config \
+     && passwd -d ansible-user \
+     && passwd -d root \
+     && /bin/systemctl enable sshd
+
+EXPOSE 22
+
+CMD /sbin/init
+

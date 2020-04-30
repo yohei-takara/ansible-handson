@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  controller:
+    build:
+      context: docker/.
+      dockerfile: Dockerfile_controller
+    image: own-image/ansible-handson-controller:latest
+    container_name: ansible-handson-controller
+    volumes:
+      - ./ansible:/ansible
+  target:
+    build:
+      context: docker/.
+      dockerfile: Dockerfile_target
+    image: own-image/ansible-handson-target:latest
+    container_name: ansible-handson-target
+    privileged: true
+

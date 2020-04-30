@@ -1,0 +1,16 @@
+FROM centos:7.7.1908
+
+RUN yum update -y \
+    && yum install -y \
+       sudo openssh-clients coreutils which vim curl \
+    && yum install -y epel-release \
+    && yum install -y ansible
+
+RUN  sed -i -e 's/# %wheel\tALL=(ALL)\tNOPASSWD: ALL/%wheel\tALL=(ALL)\tNOPASSWD: ALL/' /etc/sudoers \
+     && sed -i -e 's/%wheel\tALL=(ALL)\tALL/# %wheel\tALL=(ALL)\tALL/' /etc/sudoers \
+     && visudo -c \
+     && useradd ansible-user \
+     && usermod -G wheel ansible-user
+
+CMD /sbin/init
+
