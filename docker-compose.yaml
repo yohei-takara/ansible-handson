@@ -16,4 +16,6 @@ services:
     image: own-image/ansible-handson-target:latest
     container_name: ansible-handson-target
     privileged: true
+    ports:
+      - "8080:80"
 

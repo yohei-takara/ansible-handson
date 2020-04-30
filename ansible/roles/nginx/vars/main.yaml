@@ -1,0 +1,4 @@
+---
+
+nginx_repo_url: http://nginx.org/packages/centos/7/x86_64
+nginx_gpg_key: https://nginx.org/keys/nginx_signing.key

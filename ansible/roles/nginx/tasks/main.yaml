@@ -1,0 +1,22 @@
+---
+
+- name: Include vars for CentOS7
+  include_vars:
+    file: main.yaml
+- name: Add Nginx Repo
+  yum_repository:
+    name: nginx
+    description: nginx yum repo
+    baseurl: "{{ nginx_repo_url }}"
+    gpgcheck: yes
+    gpgkey: "{{ nginx_gpg_key }}"
+    enabled: yes
+
+- name: Install Nginx
+  yum: name=nginx state=installed
+
+- name: Start Nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
